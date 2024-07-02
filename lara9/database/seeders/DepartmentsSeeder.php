@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DepartmentsSeeder extends Seeder
 {
@@ -14,7 +15,7 @@ class DepartmentsSeeder extends Seeder
      */
     public function run()
     {
-        \DB::table('departments')->insert([
+        DB::table('departments')->insert([
             'name' => 'Quản trị',
         ]);
     }
