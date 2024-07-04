@@ -107,21 +107,28 @@ export default defineComponent({
     };
     getUsers();
     const deleteUser = (id) => {
-      var confirm = confirm("Bạn có chắc chắn muốn xóa không?");
-      if (confirm == true) {
-        axios
-          .delete(`http://localhost:8000/api/users/${id}`)
-          .then((response) => {
-            if (response.status == 200) {
-              message.success(response.data);
-              // location.reload();
-            } else message.error(response.data);
-            console.log(response);
-          });
-        // .catch((error) => {
-        //   messages.value = response.data;
-        // });
-      }
+      Swal.fire({
+        title: 'Error!',
+        text: 'Bạn có chắc muốn xóa',
+        icon: 'error',
+        confirmButtonText: 'Đồng ý',
+        cancelButtonText: 'Thoát',
+        showCancelButton: true,
+        showCloseButton: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .delete(`http://localhost:8000/api/users/${id}`)
+            .then((response) => {
+              if (response.status == 200) {
+                message.success(response.data);
+                getUsers();
+              }
+            });
+        }
+      }).catch((error) => {
+        console.log(error);
+      });
     };
     return {
       users,

@@ -18,6 +18,9 @@ import {
 import axios from "axios";
 window.axios = axios;
 
+import Swal from 'sweetalert2'
+window.Swal = Swal;
+
 import "./static/fontawesome/css/all.min.css";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";

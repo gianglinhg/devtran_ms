@@ -16,13 +16,16 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
-            'username' => 'linhbq89',
-            'name' => 'Giang Văn Linh',
-            'email' => 'linhbq89@gmail.com',
-            'password' => Hash::make('giangVL.2001'),
-            'department_id' => 1,
-            'status_id' => 2
-        ]);
+        for($i = 0;$i <= 10; $i++){
+            $thu_tu = (90 + $i);
+            DB::table('users')->insert([
+                'username' => 'linhbq' .$thu_tu,
+                'name' => 'Giang Văn Linh',
+                'email' => 'linhbq'.$thu_tu.'@gmail.com',
+                'password' => Hash::make('giangVL.2001'),
+                'department_id' => 1,
+                'status_id' => 2
+            ]);
+        }
     }
 }

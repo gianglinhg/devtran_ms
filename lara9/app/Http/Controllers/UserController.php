@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -30,10 +31,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        $users_status = \DB::table('users_status')
+        $users_status = DB::table('users_status')
         ->select('id as value','name as label')
         ->get();
-        $departments = \DB::table('departments')
+        $departments = DB::table('departments')
         ->select('id as value','name as label')
         ->get();
         return response()->json([
@@ -103,10 +104,10 @@ class UserController extends Controller
     {
         $users = User::find($id);
 
-        $users_status = \DB::table('users_status')
+        $users_status = DB::table('users_status')
         ->select('id as value','name as label')
         ->get();
-        $departments = \DB::table('departments')
+        $departments = DB::table('departments')
         ->select('id as value','name as label')
         ->get();
         return response()->json([
@@ -157,7 +158,7 @@ class UserController extends Controller
                 'password.confirmed' => 'Xác nhận mật khẩu chưa khớp'
             ]);
             User::find($id)->update([
-                'password' => \Hash::make($request['password']),
+                'password' => Hash::make($request['password']),
                 'change_password_at' => NOW()
             ]);
         }
