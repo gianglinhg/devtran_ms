@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -51,15 +50,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // $input = $request->all();
-        // $validator = Validator::make($input,[
-        //     'status_id' => 'required',
-        // ]);
-        // if($validator->fails()){
-        //     return response()->json($validator->errors());
-        // }
-
-        $validator = $request->validate([
+        $request->validate([
             'status_id' => 'required',
             'name' => 'required',
             'username' => 'required',
@@ -126,7 +117,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = $request->validate([
+        $request->validate([
             'status_id' => 'required',
             'name' => 'required | max:255',
             'username' => 'required | unique:users,username,'.$id,
@@ -137,7 +128,6 @@ class UserController extends Controller
             'name.required' => 'Trường này bắt buộc nhập',
             'username.required' => 'Trường này bắt buộc nhập',
             'username.unique' => 'Tài khoản đã tồn tại',
-            'email.required' => 'Tài khoản đã tồn tại',
             'email.email' => 'Chưa nhập đúng định dạng email',
             'department_id.required' => 'Trường này bắt buộc nhập',
         ]);
@@ -150,7 +140,7 @@ class UserController extends Controller
             'department_id' => $request['department_id'],
         ]);
 
-        if($request['changePassword'] == true){
+        if($request['change_password'] == true){
             $request->validate([
                 'password' => 'required | confirmed',
             ],[
@@ -162,6 +152,9 @@ class UserController extends Controller
                 'change_password_at' => NOW()
             ]);
         }
+        return response()->json([
+            'message' => 'Chỉnh sửa thành công',
+        ], 200);
     }
 
     /**
@@ -172,6 +165,11 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        if($id == 1) {
+            return response()->json([
+                'message' => 'Không thẻ xóa admin',
+            ], 201);
+        }
         $userDelete = User::find($id);
         if($userDelete) {
             $userDelete->delete();
@@ -179,6 +177,8 @@ class UserController extends Controller
             return response()->json($msg, 200);
         }
         else $msg = 'Thành viên không tồn tại';
-        return response()->json($msg, 201);
+        return response()->json([
+            'message' => $msg,
+        ], 200);
     }
 }
